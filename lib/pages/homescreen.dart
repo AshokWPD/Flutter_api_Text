@@ -22,11 +22,18 @@ class _HomescreenState extends State<Homescreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Center(child: Text("api call")) , backgroundColor: Colors.transparent,),
+      appBar: AppBar(title: const Center(child: Text("Profile List",style: TextStyle(color: Colors.black,fontSize: 25,shadows:[Shadow(
+        blurRadius: 10,color: Colors.black
+      )]),)) , backgroundColor: Colors.white,),
       body:ListView.builder(itemCount: users.length,itemBuilder: (context,index){
        final user = users[index];
        final email = user['user']['email'];
+              final phone = user['user']['phone'];
+              final username = user['user']['username'];
+
        final name = user['user']['name']['first'];
+              final gender = user['user']['gender'];
+
 
        final img = user['user']['picture']['large'];
       //         final username = user['user']['username'];
@@ -47,7 +54,7 @@ class _HomescreenState extends State<Homescreen> {
           subtitle:Text(email,),
           trailing: Text(location,style: const TextStyle(fontWeight: FontWeight.w300),),
           onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const profile_page()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) =>  profile_page(email: email, gender: gender, img: img, location: location, name: name, phone: phone, username: username,)));
           },
         );
       }),
@@ -64,8 +71,8 @@ class _HomescreenState extends State<Homescreen> {
 
   void fetchdata() async {
   setState(() {
-    loading = true; // Assuming you have a 'loading' state variable to track loading status
-    error = null;   // Assuming you have an 'error' state variable to track errors
+    loading = true; 
+    error = null;   
   });
 
   final url = Uri.parse('https://randomuser.me/api/0.8/?results=20');
@@ -79,11 +86,11 @@ class _HomescreenState extends State<Homescreen> {
     });
   } catch (e) {
     setState(() {
-      error = "Error fetching data: $e"; // Update the error state with the error message
+      error = "Error fetching data: $e"; 
     });
   } finally {
     setState(() {
-      loading = false; // Whether success or error, loading is finished
+      loading = false; 
     });
   }
 
