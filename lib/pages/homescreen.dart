@@ -4,6 +4,9 @@ import 'package:dev_api/pages/imgview.dart';
 import 'package:dev_api/pages/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
+import 'package:mailto/mailto.dart';
+
 
 class Homescreen extends StatefulWidget {
   const Homescreen({super.key});
@@ -18,6 +21,15 @@ class _HomescreenState extends State<Homescreen> {
   List<dynamic> users =[];
    late bool loading;
   var error;
+  //  Future<void> _launchURL(String url) async {
+  //   final Uri uri = Uri.parse(url);
+  //   if (!await launchUrl(
+  //     uri,
+  //     mode: LaunchMode.externalApplication,
+  //   )) {
+  //     throw "Can not launch url";
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +64,7 @@ class _HomescreenState extends State<Homescreen> {
           ),
           title: Text(name),
           subtitle:Text(email,),
-          trailing: Text(location,style: const TextStyle(fontWeight: FontWeight.w300),),
+          trailing: IconButton( onPressed: _launchEmail, icon: const Icon(Icons.email_rounded)),
           onTap: () {
             Navigator.push(context, MaterialPageRoute(builder: (context) =>  profile_page(email: email, gender: gender, img: img, location: location, name: name, phone: phone, username: username,)));
           },
@@ -97,6 +109,20 @@ class _HomescreenState extends State<Homescreen> {
   print("fetch success!!!!!!!!!!!!!!!!!!");
 }
 
+void _launchEmail() async {
+launchMailto() async {
+  final mailtoLink = Mailto(
+    to: ['to@example.com'],
+    // cc: ['cc1@example.com', 'cc2@example.com'],
+    subject: 'mailto example subject',
+    body: 'mailto example body',
+  );
+  // Convert the Mailto instance into a string.
+  // Use either Dart's string interpolation
+  // or the toString() method.
+  await launch('$mailtoLink');
+}
+}
 
 
 
